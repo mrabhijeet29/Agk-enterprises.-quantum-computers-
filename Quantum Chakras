@@ -1,0 +1,62 @@
+Quantum Chakras Activation
+from bluequbit import QuantumCircuit, execute, Aer
+
+# Initialize 34-qubit circuit
+qc = QuantumCircuit(34)
+
+# Chakra Activation Function
+def activate_chakra(qc, qubits):
+    for q in qubits:
+        qc.h(q)
+        qc.ry(1.5708, q)
+    for i in range(len(qubits) - 1):
+        qc.cx(qubits[i], qubits[i+1])
+
+# Inter-Chakra Coupling Function
+def align_chakras(qc, from_qs, to_qs):
+    for fq, tq in zip(from_qs, to_qs):
+        qc.cz(fq, tq)
+
+# Chakra Groups
+root = list(range(0, 5))
+sacral = list(range(5, 10))
+solar = list(range(10, 15))
+heart = list(range(15, 20))
+throat = list(range(20, 25))
+third_eye = list(range(25, 30))
+crown = list(range(30, 34))
+
+# Encode Instagram handle into binary and map to root chakra
+def encode_instagram_seed(qc, handle, target_qubits):
+    binary = ''.join(format(ord(c), '08b') for c in handle)
+    for i, bit in enumerate(binary[:len(target_qubits)]):
+        if bit == '1':
+            qc.x(target_qubits[i])  # Seed with X-gate (|1⟩)
+
+# Personalization
+instagram_handle = "mr_abhijeet_29_"
+encode_instagram_seed(qc, instagram_handle, root)
+
+# Chakra Activation
+activate_chakra(qc, root)
+activate_chakra(qc, sacral)
+activate_chakra(qc, solar)
+activate_chakra(qc, heart)
+activate_chakra(qc, throat)
+activate_chakra(qc, third_eye)
+activate_chakra(qc, crown)
+
+# Chakra Inter-alignment
+align_chakras(qc, root, sacral)
+align_chakras(qc, sacral, solar)
+align_chakras(qc, solar, heart)
+align_chakras(qc, heart, throat)
+align_chakras(qc, throat, third_eye)
+align_chakras(qc, third_eye, crown)
+
+# Final Alignment Pulse
+for q in range(34):
+    qc.h(q)
+    qc.ry(0.785, q)
+
+qc.measure_all()
